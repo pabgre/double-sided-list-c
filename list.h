@@ -6,6 +6,8 @@ typedef void (*freeFunction)(void *);
 
 typedef void (*printFunction)(void *);
 
+typedef void (*copyFunction)(void **, void *);
+
 typedef enum { FALSE, TRUE } bool;
 
 typedef struct _listNode {
@@ -21,16 +23,17 @@ typedef struct {
   listNode *tail;
   freeFunction freeFn;
   printFunction printFn;
+	copyFunction copyFn;
 
 } list;
 
-list list_new(int elementSize, freeFunction freeFn, printFunction printFn);
+list list_new(int elementSize, freeFunction freeFn, printFunction printFn, copyFunction copyFn);
 void list_destroy(list *list);
 
 void list_append(list *list, void *element);
 void list_push(list *list, void *element);
 int list_size(list *list);
 void list_print(list *list);
-void* list_get(list *list, int index, bool removeFromList);
+void list_get(list *list, int index, void* element, bool removeFromList);
 
 #endif

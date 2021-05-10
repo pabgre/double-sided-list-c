@@ -4,7 +4,7 @@
 
 #include "list.h"
 
-list list_new(int elementSize, freeFunction freeFn, printFunction printFn)
+list list_new(int elementSize, freeFunction freeFn, printFunction printFn, copyFunction copyFn)
 {
   list list;
   if(elementSize > 0){
@@ -13,12 +13,14 @@ list list_new(int elementSize, freeFunction freeFn, printFunction printFn)
     list.head = list.tail = NULL;
     list.freeFn = freeFn;
     list.printFn = printFn;
+	list.copyFn = copyFn;
   }else{
     list.logicalLength = 0;
     list.elementSize = 0;
     list.head = list.tail = NULL;
     list.freeFn = freeFn;
     list.printFn = printFn;
+	list.copyFn = copyFn;
   }
   return(list);
 }
@@ -38,7 +40,7 @@ void list_destroy(list *list)
       list->freeFn(current->data);
     }
 
-    free(current->data);
+    //free(current->data);
     free(current);
     index--;
   }
@@ -47,11 +49,10 @@ void list_destroy(list *list)
 void list_append(list *list, void *element)
 {
   listNode *node = malloc(sizeof(listNode));
-  node->data = malloc(list->elementSize);
   node->next = NULL;
   node->prev = NULL;
 
-  memcpy(node->data, element, list->elementSize);
+	list->copyFn(&node->data, element);
 
   if(list->logicalLength == 0) {
     list->head = list->tail = node;
@@ -71,11 +72,10 @@ void list_append(list *list, void *element)
 void list_push(list *list, void *element)
 {
   listNode *node = malloc(sizeof(listNode));
-  node->data = malloc(list->elementSize);
   node->next = NULL;
   node->prev = NULL;
 
-  memcpy(node->data, element, list->elementSize);
+  list->copyFn(&node->data, element);
 
   if(list->logicalLength == 0) {
     list->head = list->tail = node;
@@ -93,9 +93,8 @@ void list_push(list *list, void *element)
 }
 
 
-void* list_get(list *list, int index, bool removeFromList)
+void list_get(list *list, int index, void* element, bool removeFromList)
 {
-  void* element;
   if(list->logicalLength > 0){
     listNode *node = list->head;
 
@@ -110,7 +109,7 @@ void* list_get(list *list, int index, bool removeFromList)
         index++;
       }
     }
-    memcpy(element, node->data, list->elementSize);
+    list->copyFn(element, &node->data);
 
     if(removeFromList) {
       node->prev->next = node->next;
@@ -120,10 +119,10 @@ void* list_get(list *list, int index, bool removeFromList)
       free(node->data);
       free(node);
     }
-  }else{
-    //element=NULL;
   }
-  return(element);
+  else{
+	  element=NULL;
+  }
 }
 
 
