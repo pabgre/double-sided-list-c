@@ -1,66 +1,128 @@
 #include "list.h"
 #include "list_extras.h"
 
-int main()
+/*
+** Create and print an int linked list
+*/
+
+void	test_int(void)
 {
-    t_list lst;
-    
-    // Create and print an int linked list
-    unsigned int_size = sizeof(int);
-    list_empty(&lst, int_size, print_int);
-    int arr[] = {10, 20, 30, 40, 50}, i;
-    for (i=4; i>=0; i--)
-       list_push(&lst, &arr[i]);
-    printf("Created integer linked list is \n");
-    list_print(&lst);
+	size_t	size;
+	t_list	lst;
+	int		i;
+	int		arr[5];
 
-    int e = list_get_int(&lst, -6, false);
+	size = sizeof(int);
+	list_empty(&lst, size, print_int, free);
+	i = 0;
+	while (i < 5)
+	{
+		arr[i] = (i + 1) * 10;
+		i++;
+	}
+	while (i > 0)
+	{
+		list_push(&lst, &arr[i - 1]);
+		i--;
+	}
+	printf("Created integer linked list: \n");
+	list_print(&lst);
+	i = list_get_int(&lst, -6, false);
+	printf("\ngot: %d", i);
+	list_destroy(&lst);
+}
 
-    printf("\ngot: %d",e);
-  
-    // Create and print a float linked list
-    unsigned float_size = sizeof(float);
-    list_empty(&lst, float_size, print_float);
-    float arr2[] = {10.1, 20.2, 30.3, 40.4, 50.5};
-    for (i=4; i>=0; i--)
-       list_push(&lst, &arr2[i]);
-    printf("\n\nCreated float linked list is \n");
-    list_print(&lst);
+/*
+** Create and print a float linked list
+*/
 
-    float f = list_get_float(&lst, -2, false);
+void	test_float(void)
+{
+	size_t	size;
+	t_list	lst;
+	int		i;
+	float	arr[5];
+	float	f;
 
-    while(lst.len > 0)
-        f = list_get_float(&lst, 0, true);
+	size = sizeof(float);
+	list_empty(&lst, size, print_float, free);
+	i = -1;
+	while (i++ < 5)
+		arr[i] = (i + 1) * 10 + (i / 10);
+	while (i > 0)
+	{
+		list_push(&lst, &arr[i - 1]);
+		i--;
+	}
+	printf("\n\nCreated float linked list: \n");
+	list_print(&lst);
+	f = list_get_float(&lst, -2, false);
+	printf("\nlist_get_float(&lst, -2, false): %f", f);
+	while (lst.head)
+		f = list_get_float(&lst, 0, true);
+	printf("\ngot: %f", f);
+}
 
+/*
+** Create and print a string linked list
+*/
 
+void	test_str(t_list *lst)
+{
+	int		i;
+	char	*arr[5];
+	char	*g;
 
-    printf("\ngot: %f",f);
+	list_empty(lst, sizeof(char *), print_string, free);
+	arr[0] = "hola";
+	arr[1] = "buenas";
+	arr[2] = "tardes";
+	arr[3] = ":)";
+	arr[4] = "chao";
+	i = 5;
+	while (i > 0)
+	{
+		list_push(lst, &arr[i - 1]);
+		i--;
+	}
+	arr[0] = "que miras?";
+	printf("\n\nCreated string linked list: \n");
+	list_print(lst);
+	g = list_get_str(lst, 2, true);
+	printf("\ngot: %s", g);
+}
 
+void	test_lst(t_list *lst)
+{
+	t_list	lst2;
+	t_list	l;
+	int		i;
 
-     // Create and print a float linked list
-    list_empty(&lst, sizeof(char*), print_string);
-    char* arr3[] = {"hola", "buenas", "tardes", ":)", "chao"};
-    for (i=4; i>=0; i--)
-       list_push(&lst, &arr3[i]);
-    arr3[0] = "que miras?";
-    printf("\n\nCreated string linked list is \n");
-    list_print(&lst);
+	list_empty(&lst2, sizeof(t_list), print_list, free);
+	i = 5;
+	while (i > 0)
+	{
+		list_push(&lst2, lst);
+		i--;
+	}
+	printf("\n\nCreated list of string linked list: \n");
+	list_print(&lst2);
+	l = list_get_list(&lst2, 2, false);
+	printf("\ngot: ");
+	list_print(&l);
+	printf("\n");
+	list_destroy(&lst2);
+}
 
-    char* g = list_get_str(&lst, 2, true);
+int	main(void)
+{
+	t_list	list;
 
-    printf("\ngot: %s",g);
-
-    t_list lst2;
-    list_empty(&lst2, sizeof(t_list), print_list);
-    for (i=4; i>=0; i--)
-      list_push(&lst2, &lst);
-    printf("\n\nCreated list of string linked list is \n");
-    list_print(&lst2);
-
-    t_list l = list_get_list(&lst2, 2, false);
-
-    printf("\ngot: ");
-    list_print(&l);
+	test_int();
+	test_float();
+	test_str(&list);
+	test_lst(&list);
+	
 	system("leaks a.out");
-    return 0;
+	return (0);
 }
