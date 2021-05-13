@@ -6,7 +6,7 @@
 /*   By: psan-gre <psan-gre@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:07:28 by psan-gre          #+#    #+#             */
-/*   Updated: 2021/05/12 10:57:38 by fgata-va         ###   ########.fr       */
+/*   Updated: 2021/05/12 19:24:31 by fgata-va         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,8 @@ void	list_append(t_list* lst, void *new_data);
 void	*list_get(t_list* lst, int i, bool remove);
 void	list_print(t_list *lst);
 void	list_destroy(t_list *lst);
+void	cpy_data(t_list *lst, t_listNode *node, void *data);
+t_listNode	*select_node(t_list *lst, int i);
+void	node_destroy(t_list *lst, t_listNode *node);
 
 #endif

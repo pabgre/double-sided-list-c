@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: psan-gre <psan-gre@student.42madrid.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/12 18:45:19 by psan-gre          #+#    #+#             */
+/*   Updated: 2021/05/12 19:24:32 by fgata-va         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "list.h"
 
 void	list_empty(t_list *lst, size_t data_size, fptr print_fn, del free_data)
@@ -8,18 +20,6 @@ void	list_empty(t_list *lst, size_t data_size, fptr print_fn, del free_data)
 	lst->data_size = data_size;
 	lst->print_fn = print_fn;
 	lst->free_data = free_data;
-}
-
-void	cpy_data(t_list *lst, t_listNode *node, void *data)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < lst->data_size)
-	{
-		*(char *)(node->data + i) = *(char *)(data + i);
-		i++;
-	}
 }
 
 void	list_add(t_list *lst, void *new_data, bool push)
@@ -50,36 +50,6 @@ void	list_add(t_list *lst, void *new_data, bool push)
 	lst->len++;
 }
 
-void	list_push(t_list *lst, void *new_data)
-{
-	list_add(lst, new_data, true);
-}
-
-void	list_append(t_list *lst, void *new_data)
-{
-	list_add(lst, new_data, false);
-}
-
-void	node_destroy(t_list *lst, t_listNode *node)
-{
-	if(lst->len > 1)
-	{
-		node->prev->next = node->next;
-		node->next->prev = node->prev;
-		if(lst->head == node)
-			lst->head = node->next;
-		if(lst->tail == node)
-			lst->head = node->prev;
-	}
-	else
-	{
-		lst->head = NULL;
-		lst->tail = NULL;
-	}
-	lst->len--;
-	free(node);
-}
-
 void	list_destroy(t_list *lst)
 {
 	int			i;
@@ -101,34 +71,7 @@ void	list_destroy(t_list *lst)
 	lst->tail = NULL;
 }
 
-t_listNode	*select_node(t_list *lst, int i)
-{
-	t_listNode	*node;
-
-	if (lst->len > 0)
-		node = lst->head;
-	if (i < 0)
-	{
-		i = lst->len - i % lst->len;
-		while (i > 0)
-		{
-			node = node->prev;
-			i--;
-		}
-	}
-	else
-	{
-		i = i % lst->len;
-		while (i > 0)
-		{
-			node = node->next;
-			i--;
-		}
-	}
-	return (node);
-}
-
-void	*list_get(t_list* lst, int index, bool remove)
+void	*list_get(t_list *lst, int index, bool remove)
 {
 	t_listNode	*node;
 	void		*out;
@@ -140,15 +83,15 @@ void	*list_get(t_list* lst, int index, bool remove)
 	return (out);
 }
 
-void list_print(t_list *lst)
+void	list_print(t_list *lst)
 {
-	int i;
-	t_listNode *node;
+	int			i;
+	t_listNode	*node;
 
 	i = lst->len;
 	node = lst->head;
 	printf("l(");
-	while (i> 0)
+	while (i > 0)
 	{
 		lst->print_fn(node->data);
 		node = node->next;

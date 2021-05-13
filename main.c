@@ -92,6 +92,10 @@ void	test_str(t_list *lst)
 	printf("\ngot: %s", g);
 }
 
+/*
+** Create and print a list of lists
+*/
+
 void	test_lst(t_list *lst)
 {
 	t_list	lst2;
@@ -122,7 +126,6 @@ int	main(void)
 	test_float();
 	test_str(&list);
 	test_lst(&list);
-	
 	system("leaks a.out");
 	return (0);
 }
