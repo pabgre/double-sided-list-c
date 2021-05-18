@@ -6,13 +6,13 @@
 /*   By: psan-gre <psan-gre@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:48:40 by psan-gre          #+#    #+#             */
-/*   Updated: 2021/05/12 19:05:16 by fgata-va         ###   ########.fr       */
+/*   Updated: 2021/05/18 17:47:55 by fgata-va         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 
-void	cpy_data(t_list *lst, t_listNode *node, void *data)
+void	cpy_data(t_dlist *lst, t_listNode *node, void *data)
 {
 	size_t	i;
 
@@ -24,7 +24,7 @@ void	cpy_data(t_list *lst, t_listNode *node, void *data)
 	}
 }
 
-void	node_destroy(t_list *lst, t_listNode *node)
+void	node_destroy(t_dlist *lst, t_listNode *node)
 {
 	if (lst->len > 1)
 	{
@@ -44,7 +44,7 @@ void	node_destroy(t_list *lst, t_listNode *node)
 	free(node);
 }
 
-t_listNode	*select_node(t_list *lst, int i)
+t_listNode	*select_node(t_dlist *lst, int i)
 {
 	t_listNode	*node;
 
@@ -71,12 +71,12 @@ t_listNode	*select_node(t_list *lst, int i)
 	return (node);
 }
 
-void	list_push(t_list *lst, void *new_data)
+void	list_push(t_dlist *lst, void *new_data)
 {
 	list_add(lst, new_data, true);
 }
 
-void	list_append(t_list *lst, void *new_data)
+void	list_append(t_dlist *lst, void *new_data)
 {
 	list_add(lst, new_data, false);
 }

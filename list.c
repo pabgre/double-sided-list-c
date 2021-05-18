@@ -6,13 +6,13 @@
 /*   By: psan-gre <psan-gre@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 18:45:19 by psan-gre          #+#    #+#             */
-/*   Updated: 2021/05/12 19:24:32 by fgata-va         ###   ########.fr       */
+/*   Updated: 2021/05/18 18:54:29 by fgata-va         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 
-void	list_empty(t_list *lst, size_t data_size, fptr print_fn, del free_data)
+void	list_empty(t_dlist *lst, size_t data_size, t_fptr print_fn, t_del free_data)
 {
 	lst->head = NULL;
 	lst->tail = NULL;
@@ -22,7 +22,7 @@ void	list_empty(t_list *lst, size_t data_size, fptr print_fn, del free_data)
 	lst->free_data = free_data;
 }
 
-void	list_add(t_list *lst, void *new_data, bool push)
+void	list_add(t_dlist *lst, void *new_data, bool push)
 {
 	t_listNode	*new_listNode;
 
@@ -50,7 +50,7 @@ void	list_add(t_list *lst, void *new_data, bool push)
 	lst->len++;
 }
 
-void	list_destroy(t_list *lst)
+void	list_destroy(t_dlist *lst)
 {
 	int			i;
 	t_listNode	*node;
@@ -71,7 +71,7 @@ void	list_destroy(t_list *lst)
 	lst->tail = NULL;
 }
 
-void	*list_get(t_list *lst, int index, bool remove)
+void	*list_get(t_dlist *lst, int index, bool remove)
 {
 	t_listNode	*node;
 	void		*out;
@@ -83,7 +83,7 @@ void	*list_get(t_list *lst, int index, bool remove)
 	return (out);
 }
 
-void	list_print(t_list *lst)
+void	list_print(t_dlist *lst)
 {
 	int			i;
 	t_listNode	*node;

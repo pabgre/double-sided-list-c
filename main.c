@@ -8,7 +8,7 @@
 void	test_int(void)
 {
 	size_t	size;
-	t_list	lst;
+	t_dlist	lst;
 	int		i;
 	int		arr[5];
 
@@ -27,7 +27,7 @@ void	test_int(void)
 	}
 	printf("Created integer linked list: \n");
 	list_print(&lst);
-	i = list_get_int(&lst, -6, false);
+	i = list_get_int(&lst, -6, 0);
 	printf("\ngot: %d", i);
 	list_destroy(&lst);
 }
@@ -39,7 +39,7 @@ void	test_int(void)
 void	test_float(void)
 {
 	size_t	size;
-	t_list	lst;
+	t_dlist	lst;
 	int		i;
 	float	arr[5];
 	float	f;
@@ -48,7 +48,7 @@ void	test_float(void)
 	list_empty(&lst, size, print_float, free);
 	i = -1;
 	while (i++ < 5)
-		arr[i] = (i + 1) * 10 + (i / 10);
+		arr[i] = ((i + 1) * 10) + ((float)(i + 1) / 10);
 	while (i > 0)
 	{
 		list_push(&lst, &arr[i - 1]);
@@ -56,10 +56,10 @@ void	test_float(void)
 	}
 	printf("\n\nCreated float linked list: \n");
 	list_print(&lst);
-	f = list_get_float(&lst, -2, false);
+	f = list_get_float(&lst, -2, 0);
 	printf("\nlist_get_float(&lst, -2, false): %f", f);
 	while (lst.head)
-		f = list_get_float(&lst, 0, true);
+		f = list_get_float(&lst, 0, 1);
 	printf("\ngot: %f", f);
 }
 
@@ -67,7 +67,7 @@ void	test_float(void)
 ** Create and print a string linked list
 */
 
-void	test_str(t_list *lst)
+void	test_str(t_dlist *lst)
 {
 	int		i;
 	char	*arr[5];
@@ -88,7 +88,7 @@ void	test_str(t_list *lst)
 	arr[0] = "que miras?";
 	printf("\n\nCreated string linked list: \n");
 	list_print(lst);
-	g = list_get_str(lst, 2, true);
+	g = list_get_str(lst, 2, 1);
 	printf("\ngot: %s", g);
 }
 
@@ -96,13 +96,13 @@ void	test_str(t_list *lst)
 ** Create and print a list of lists
 */
 
-void	test_lst(t_list *lst)
+void	test_lst(t_dlist *lst)
 {
-	t_list	lst2;
-	t_list	l;
+	t_dlist	lst2;
+	t_dlist	l;
 	int		i;
 
-	list_empty(&lst2, sizeof(t_list), print_list, free);
+	list_empty(&lst2, sizeof(t_dlist), print_list, free);
 	i = 5;
 	while (i > 0)
 	{
@@ -111,7 +111,7 @@ void	test_lst(t_list *lst)
 	}
 	printf("\n\nCreated list of string linked list: \n");
 	list_print(&lst2);
-	l = list_get_list(&lst2, 2, false);
+	l = list_get_list(&lst2, 2, 0);
 	printf("\ngot: ");
 	list_print(&l);
 	printf("\n");
@@ -120,12 +120,11 @@ void	test_lst(t_list *lst)
 
 int	main(void)
 {
-	t_list	list;
+	t_dlist	list;
 
 	test_int();
 	test_float();
 	test_str(&list);
 	test_lst(&list);
-	system("leaks a.out");
 	return (0);
 }
